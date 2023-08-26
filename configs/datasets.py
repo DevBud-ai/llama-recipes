@@ -25,7 +25,7 @@ class alpaca_dataset:
     dataset: str = "alpaca_dataset"
     train_split: str = "train"
     test_split: str = "val"
-    data_path: str = "ft_datasets/alpaca_data.json"
+    data_path: str = "ft_datasets/dummy-instruction.json"
 
 @dataclass
 class identity_dataset:

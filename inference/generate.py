@@ -31,13 +31,13 @@ def main(
         )
     tokenizer = LlamaTokenizer.from_pretrained(base_model)
 
-    tokenizer.add_special_tokens(
-        {
+    # tokenizer.add_special_tokens(
+    #     {
          
-            "pad_token": "<PAD>",
-        }
-    )
-    model.resize_token_embeddings(model.config.vocab_size + 1)
+    #         "pad_token": "<PAD>",
+    #     }
+    # )
+    # model.resize_token_embeddings(model.config.vocab_size + 1)
 
     # model.half()
     model.eval()
