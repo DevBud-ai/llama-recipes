@@ -33,3 +33,10 @@ class identity_dataset:
     train_split: str = "train"
     test_split: str = "val"
     data_path: str = "ft_datasets/dummy-data-conversation.json"
+
+@dataclass
+class evol_code_dataset:
+    dataset: str = "evol_code_dataset"
+    train_split: str = "train"
+    test_split: str = "val"
+    data_path: str = "nickrosh/Evol-Instruct-Code-80k-v1"
