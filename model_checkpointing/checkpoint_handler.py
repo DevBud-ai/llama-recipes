@@ -146,8 +146,6 @@ def save_model_checkpoint(
         cfg.dist_checkpoint_root_folder
         + "/"
         + cfg.dist_checkpoint_folder
-        + "-"
-        + cfg.model_name
         )
         save_dir = Path.cwd() / folder_name
         save_dir.mkdir(parents=True, exist_ok=True)

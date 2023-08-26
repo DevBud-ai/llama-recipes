@@ -64,7 +64,7 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     
     Returns: results dictionary containing average training and validation perplexity and loss
     """
-    log_interval = 5
+
     wandb.init(project="codellama")
 
     wandb.watch(model, log_freq=100, log="all")
