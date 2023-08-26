@@ -64,10 +64,10 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     
     Returns: results dictionary containing average training and validation perplexity and loss
     """
-    log_interval = 10
+    log_interval = 5
     wandb.init(project="codellama")
 
-    wandb.watch(model, log_freq=log_interval)
+    wandb.watch(model, log_freq=100, log="all")
 
     # Create a gradient scaler for fp16
     if train_config.use_fp16 and train_config.enable_fsdp:
@@ -116,8 +116,6 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                         print(f"\n step {step} is completed and loss is {loss.detach().float()}")
                 else:
                     print(f"\n step {step} is completed and loss is {loss.detach().float()}")
-                if step % log_interval == 0:
-                    wandb.log({"loss": loss})
 
 
         epoch_end_time = time.perf_counter()-epoch_start_time
@@ -149,9 +147,13 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
         
         # Update the learning rate as needed
         lr_scheduler.step()
+
+        if step % log_interval == 0:
+            wandb.log({"loss": loss, "epoch": epoch, "learning_rate": lr_scheduler.get_lr(), "step": step})
           
         if train_config.run_validation:
             eval_ppl, eval_epoch_loss = evaluation(model, train_config, eval_dataloader, local_rank, tokenizer)
+            wandb.log({"eval_loss": eval_epoch_loss, "epoch": epoch, "step": step})
             checkpoint_start_time = time.perf_counter()
             if train_config.save_model and eval_epoch_loss < best_val_loss:
                 if train_config.enable_fsdp:
