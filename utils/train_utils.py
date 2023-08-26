@@ -119,9 +119,7 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                 else:
                     print(f"\n step {step} is completed and loss is {loss.detach().float()}")
                 
-                if step % log_interval == 0:
-                    print("learning_rate", lr_scheduler.get_lr()[0])
-                    wandb.log({"loss": loss, "epoch": epoch, "learning_rate": lr_scheduler.get_lr()[0], "step": step})
+                wandb.log({"loss": loss, "epoch": epoch, "learning_rate": lr_scheduler.get_lr()[0], "step": step})
 
 
         epoch_end_time = time.perf_counter()-epoch_start_time
