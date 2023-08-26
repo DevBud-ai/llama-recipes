@@ -13,8 +13,8 @@ class train_config:
     batch_size_training: int=4
     num_epochs: int=3
     num_workers_dataloader: int=1
-    lr: float=1e-4
-    weight_decay: float=0.0
+    lr: float=1.5e-4
+    weight_decay: float=4.5e-5
     gamma: float= 0.85
     seed: int=42
     use_fp16: bool=False
