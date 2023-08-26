@@ -81,7 +81,6 @@ def main(
                 label="Instruction",
                 placeholder="Tell me about alpacas.",
             ),
-            gr.components.Textbox(lines=2, label="Input", placeholder="none"),
             gr.components.Slider(
                 minimum=0, maximum=1, value=0.1, label="Temperature"
             ),
@@ -96,8 +95,7 @@ def main(
             ),
             gr.components.Slider(
                 minimum=1, maximum=2000, step=1, value=128, label="Max tokens"
-            ),
-            gr.components.Checkbox(label="Stream output"),
+            )
         ],
         outputs=[
             gr.inputs.Textbox(
@@ -105,7 +103,7 @@ def main(
                 label="Output",
             )
         ],
-        title="LLaMa Inference",
+        title="LLaMa Inference"
     ).queue().launch(server_name="0.0.0.0", share=True)
 
 if __name__ == "__main__":
