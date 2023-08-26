@@ -232,7 +232,7 @@ def main(**kwargs):
             betas=(0.9, 0.95)
         )
     # scheduler = StepLR(optimizer, step_size=1, gamma=train_config.gamma)
-    scheduler = OneCycleLR(optimizer, max_lr=train_config.lr, steps_per_epoch=len(train_dataloader), epochs=train_config.num_epochs, final_div_factor=1.2)
+    scheduler = OneCycleLR(optimizer, max_lr=train_config.lr, steps_per_epoch=len(train_dataloader), epochs=train_config.num_epochs, pct_start=0.1, final_div_factor=1.2)
 
     # Start the training process
     results = train(
