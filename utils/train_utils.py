@@ -105,17 +105,22 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                         scaler.step(optimizer)
                         scaler.update()
                         optimizer.zero_grad()
+                        lr_scheduler.step()
                 else:
                     # regular backpropagation when fp16 is not used
                     loss.backward()
                     if (step + 1) % gradient_accumulation_steps == 0 or step == len(train_dataloader) - 1:
                         optimizer.step()
                         optimizer.zero_grad()
+                        lr_scheduler.step()
                 if train_config.enable_fsdp:
                     if rank==0:       
                         print(f"\n step {step} is completed and loss is {loss.detach().float()}")
                 else:
                     print(f"\n step {step} is completed and loss is {loss.detach().float()}")
+                
+                if step % log_interval == 0:
+                    wandb.log({"loss": loss, "epoch": epoch, "learning_rate": lr_scheduler.get_lr(), "step": step})
 
 
         epoch_end_time = time.perf_counter()-epoch_start_time
@@ -146,10 +151,7 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
             print(f"CPU Total Peak Memory consumed during the train (max): {memtrace.cpu_peaked + memtrace.cpu_begin} GB")
         
         # Update the learning rate as needed
-        lr_scheduler.step()
-
-        if step % log_interval == 0:
-            wandb.log({"loss": loss, "epoch": epoch, "learning_rate": lr_scheduler.get_lr(), "step": step})
+        # lr_scheduler.step()
           
         if train_config.run_validation:
             eval_ppl, eval_epoch_loss = evaluation(model, train_config, eval_dataloader, local_rank, tokenizer)
