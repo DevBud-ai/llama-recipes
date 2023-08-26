@@ -12,7 +12,7 @@ from pkg_resources import packaging
 from torch.distributed.fsdp import (
     FullyShardedDataParallel as FSDP,
 )
-from torch.optim.lr_scheduler import StepLR
+from torch.optim.lr_scheduler import StepLR, OneCycleLR
 from torch.utils.data import DistributedSampler
 from transformers import (
     LlamaForCausalLM,
@@ -229,8 +229,10 @@ def main(**kwargs):
             model.parameters(),
             lr=train_config.lr,
             weight_decay=0.0,
+            betas=(0.9, 0.95)
         )
-    scheduler = StepLR(optimizer, step_size=1, gamma=train_config.gamma)
+    # scheduler = StepLR(optimizer, step_size=1, gamma=train_config.gamma)
+    scheduler = OneCycleLR(optimizer, max_lr=train_config.lr, steps_per_epoch=len(train_dataloader), epochs=train_config.num_epochs)
 
     # Start the training process
     results = train(

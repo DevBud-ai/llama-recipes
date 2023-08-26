@@ -34,6 +34,7 @@ import model_checkpointing
 import torch.cuda.nccl as nccl
 from torch.distributed.fsdp.sharded_grad_scaler import ShardedGradScaler
 from pathlib import Path
+import wandb
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from policies import bfSixteen, fpSixteen,bfSixteen_mixed, get_llama_wrapper
 
@@ -63,6 +64,11 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     
     Returns: results dictionary containing average training and validation perplexity and loss
     """
+    log_interval = 10
+    wandb.init(project="codellama", config=train_config)
+
+    wandb.watch(model, log_freq=log_interval)
+
     # Create a gradient scaler for fp16
     if train_config.use_fp16 and train_config.enable_fsdp:
         scaler = ShardedGradScaler()
@@ -110,6 +116,10 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                         print(f"\n step {step} is completed and loss is {loss.detach().float()}")
                 else:
                     print(f"\n step {step} is completed and loss is {loss.detach().float()}")
+                if step % log_interval == 0:
+                    wandb.log({"loss": loss})
+
+
         epoch_end_time = time.perf_counter()-epoch_start_time
         epoch_times.append(epoch_end_time)    
         # Reducing total_loss across all devices if there's more than one CUDA device
