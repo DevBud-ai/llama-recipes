@@ -124,7 +124,7 @@ def main(**kwargs):
     tokenizer.add_special_tokens(
             {
 
-                "pad_token": "<PAD>",
+                "pad_token": "[PAD]",
             }
         )
     if train_config.use_peft:
