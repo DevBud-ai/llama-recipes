@@ -6,3 +6,4 @@ from .alpaca_dataset import InstructionDataset as get_alpaca_dataset
 from .samsum_dataset import get_preprocessed_samsum as get_samsum_dataset
 from .identity_dataset import IdentityDataset as get_identity_dataset
 from .evol_code_dataset import EvolCodeDataset as get_evol_code_dataset
+from .orca_dataset import OrcaDataset as get_orca_dataset

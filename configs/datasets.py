@@ -40,3 +40,10 @@ class evol_code_dataset:
     train_split: str = "train"
     test_split: str = "val"
     data_path: str = "nickrosh/Evol-Instruct-Code-80k-v1"
+
+@dataclass
+class orca_dataset:
+    dataset: str = "orca_dataset"
+    train_split: str = "train"
+    test_split: str = "val"
+    data_path: str = "iamplus/Open_Platypus_Orca"

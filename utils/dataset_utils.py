@@ -10,7 +10,8 @@ from ft_datasets import (
     get_alpaca_dataset,
     get_samsum_dataset,
     get_identity_dataset,
-    get_evol_code_dataset
+    get_evol_code_dataset,
+    get_orca_dataset
 )
 from typing import Optional
 
@@ -20,7 +21,8 @@ DATASET_PREPROC = {
     "grammar_dataset": get_grammar_dataset,
     "samsum_dataset": get_samsum_dataset,
     "identity_dataset": get_identity_dataset,
-    "evol_code_dataset": get_evol_code_dataset
+    "evol_code_dataset": get_evol_code_dataset,
+    "orca_dataset": get_orca_dataset
 }
 
 
